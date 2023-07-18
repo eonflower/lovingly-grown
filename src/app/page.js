@@ -1,113 +1,109 @@
-import Image from 'next/image'
+"use client";
+
+import './globals.css'
+import Image from "next/image"
+import bedrock from "../../public/bedrock.svg"
+import grass from "../../public/grass.svg"
+import subsoil from "../../public/subsoil.svg"
+import topsoil from "../../public/topsoil.svg"
+import weatheredRocks from "../../public/weathered-rocks.svg"
+import logo from "../../public/lg-logo.png"
+import { Parallax, ParallaxLayer } from '@react-spring/parallax'
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+
+  const [screenSize, setScreenSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 1024,
+    height: typeof window !== 'undefined' ? window.innerHeight : 768
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const getOffset = (screenWidth) => {
+    if (screenWidth < 468) {
+      return [0, 0.28, 0.48, 0.65, 0.8];
+    } else if (screenWidth >= 468  && screenWidth <= 1024) {
+      return [0, 0.45, 0.5, 0.7, 0.89];
+    } else {
+      return [0, 0.38, 0.65, 0.8, .99];
+    }
+  };
+
+  const getSpeed = (screenWidth) => {
+    if (screenWidth < 468) {
+      return [0.2, 0.5, 0.6, 0.7, 0.8];
+    } else if (screenWidth >= 468 && screenWidth < 1024) {
+      return [0.3, 0.4, 0.6, 0.7, 0.8];
+    } else {
+      return [0.18, 0.3, 0.5, 0.6, 0.7];
+    }
+  };
+
+  const getPages = (screenWidth) => {
+    if (screenWidth < 468) {
+      return [1.5];
+    } else if (screenWidth >= 468 && screenWidth < 1024) {
+      return [1.8];
+    } else {
+      return [2];
+    }
+  };
+
+  const offset = getOffset(screenSize.width);
+  const speed = getSpeed(screenSize.width);
+  const pages = getPages(screenSize.width);
+
+  
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div>
+    <Parallax pages={pages}>
+      <ParallaxLayer offset={offset[0]} speed={speed[0]}>
+        <Image 
+        className='flex justify-center mx-auto py-12 phone:px-12 w-auto phone:h-30 tablet:h-48 laptop:h-50 desktop:h-60' 
+        src={logo} alt=''/>
+        <Image src={grass} alt='' />
+      </ParallaxLayer>
+
+      <ParallaxLayer offset={offset[1]} speed={speed[1]}>
+        <Image src={topsoil} alt='' />
+      </ParallaxLayer>
+
+      <ParallaxLayer offset={offset[2]} speed={speed[2]}>
+        <Image src={subsoil} alt='' />
+      </ParallaxLayer>
+
+      <ParallaxLayer offset={offset[3]} speed={speed[3]}>
+        <Image src={weatheredRocks} alt='' />
+        <div className='main-container'/>
+      </ParallaxLayer>
+
+      <ParallaxLayer offset={offset[4]} speed={speed[4]}>
+      <Image src={bedrock} alt='' />
+        <div className='main-container text-center pt-10 px-10'>
+        <h2 className='title font-bold tracking-widest pb-2'>What we do</h2>
+          <p className='p text-sm'>From farm to fork, we deliver the season's
+          best produce right to your door. Fresh, organic, delicious food just for you!</p>
+
+          <h2 className='title font-bold tracking-widest pt-8 pb-2'>Where we're located</h2>
+          <p className='p text-sm'>We are located about 30 minutes outside of Portland, Oregon,
+          and do deliveries within the Portland Metro Area.</p>
         </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+        
+      </ParallaxLayer>
+    </Parallax>
+  </div>
   )
 }

@@ -25,3 +25,17 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.main-container {
+  background-color: #352116;
+  margin-top: -10%;
+  min-height: 1000px;
+}
+
+.title {
+  color: #997032;
+}
+
+.p {
+  color: #ffdf9ed8;
+}
